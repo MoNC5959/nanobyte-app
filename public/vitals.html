@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NanoByte | Live Vitals</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "outline": "#717786","surface-variant": "#e1e3e4","inverse-on-surface": "#f0f1f2",
+          "surface-container": "#edeeef","surface": "#f8f9fa","surface-container-low": "#f3f4f5",
+          "on-primary": "#ffffff","surface-container-high": "#e7e8e9","surface-bright": "#f8f9fa",
+          "on-secondary-fixed-variant": "#3b485a","surface-tint": "#0054d6","on-tertiary-container": "#fffbff",
+          "error": "#ba1a1a","secondary-fixed": "#d6e3fb","inverse-primary": "#b3c5ff",
+          "on-error-container": "#93000a","tertiary": "#894d00","surface-dim": "#d9dadb",
+          "primary-container": "#156aff","tertiary-fixed": "#ffdcc0","error-container": "#ffdad6",
+          "on-primary-fixed": "#001849","surface-container-lowest": "#ffffff","on-secondary-fixed": "#0f1c2d",
+          "on-secondary": "#ffffff","on-secondary-container": "#586579","on-tertiary-fixed-variant": "#6b3b00",
+          "outline-variant": "#c1c6d7","secondary-fixed-dim": "#bac7de","on-primary-container": "#fefcff",
+          "on-tertiary": "#ffffff","tertiary-fixed-dim": "#ffb875","tertiary-container": "#ac6200",
+          "background": "#f8f9fa","on-background": "#191c1d","secondary-container": "#d6e3fb",
+          "on-surface-variant": "#414755","primary-fixed-dim": "#b3c5ff","on-tertiary-fixed": "#2d1600",
+          "primary": "#0052d1","primary-fixed": "#dae1ff","on-primary-fixed-variant": "#003fa4",
+          "secondary": "#525f73","surface-container-highest": "#e1e3e4","on-error": "#ffffff",
+          "on-surface": "#191c1d","inverse-surface": "#2e3132"
+        },
+        fontFamily: { "headline": ["Space Grotesk"], "body": ["Manrope"], "label": ["Manrope"] },
+        borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    },
+  }
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  body { min-height: max(884px, 100dvh); }
+
+  .vital-value { transition: color 0.3s ease; }
+
+  .status-normal   { --dot: #15803d; --text: #15803d; --bg: #f0fdf4; --border: #bbf7d0; }
+  .status-warning  { --dot: #ac6200; --text: #ac6200; --bg: #fffbeb; --border: #fde68a; }
+  .status-critical { --dot: #ba1a1a; --text: #ba1a1a; --bg: #fff1f2; --border: #fecdd3; }
+
+  .status-dot  { background: var(--dot); }
+  .status-text { color: var(--text); }
+  .status-card { background: var(--bg); border-color: var(--border); }
+
+  /* Heartbeat pulse ring on heart rate card */
+  @keyframes heartbeat {
+    0%   { transform: scale(1);   opacity: 1; }
+    14%  { transform: scale(1.15); opacity: 0.8; }
+    28%  { transform: scale(1);   opacity: 1; }
+    42%  { transform: scale(1.08); opacity: 0.9; }
+    70%  { transform: scale(1);   opacity: 1; }
+    100% { transform: scale(1);   opacity: 1; }
+  }
+  .heartbeat { animation: heartbeat 1s ease-in-out infinite; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .fade-in { animation: fadeIn 0.4s ease forwards; }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body">
+
+<!-- Header -->
+<header class="fixed top-0 w-full z-50 bg-[#f8f9fa]/70 backdrop-blur-xl shadow-[0_12px_32px_rgba(0,84,214,0.06)] flex justify-between items-center px-6 h-16">
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded-full overflow-hidden border-2 border-primary/20">
+      <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu0yPrU--Ux-hY_Y66W32MgoSIeuwaC5kULrY0cVGk_jFRYGwrKaxsiAWNN4uFZLIZnFfk2DKE1mTvYMFv0D0MFuFbEcWXs60-EhCzkCQgEEIucyP8w7WEjytx9NeOLKeCHlqCghlzzAuU1h35PHh5xBndrT8jYdHh84kluJLXVpP7PXZwrb3qsvpbgQ825rx_dGtGv0GNpJPbyqusMpKCRJBtvgDvxOWmW2LRQWQApDr4Mau4dmmihv6i8KvUbOw4bjsiMHbMTCs" alt="Profile"/>
+    </div>
+    <a href="dashboard.html" class="font-headline font-bold text-2xl tracking-tighter text-[#0052d1] hover:opacity-75 transition-opacity">NanoByte</a>
+  </div>
+  <div class="flex items-center gap-3">
+    <span id="live-badge" class="flex items-center gap-2 px-3 py-1 bg-surface-container rounded-full text-[10px] font-bold uppercase tracking-tighter text-on-surface-variant">
+      <span class="w-1.5 h-1.5 rounded-full bg-[#15803d] animate-pulse"></span>
+      Live Feed
+    </span>
+    <button class="material-symbols-outlined text-[#191c1d] active:scale-95 transition-transform">notifications</button>
+  </div>
+</header>
+
+<main class="pt-24 pb-32 px-6 max-w-5xl mx-auto">
+
+  <!-- Page header -->
+  <section class="mb-10">
+    <span class="font-label text-[11px] font-semibold uppercase tracking-wider text-primary">Nanobot Telemetry</span>
+    <h1 class="font-headline text-4xl font-bold tracking-tight text-on-surface mt-1">Live Vitals</h1>
+    <p class="text-on-surface-variant max-w-md mt-2">Real-time biometric readings streamed directly from your nanobot swarm.</p>
+  </section>
+
+  <!-- Last updated -->
+  <p class="text-xs text-on-surface-variant mb-6 font-label tracking-wide">
+    Last reading: <span id="last-ts" class="text-on-surface font-semibold">—</span>
+  </p>
+
+  <!-- Vital cards grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+    <!-- Heart Rate -->
+    <div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10 shadow-sm" id="card-heartRate">
+      <div class="flex items-start justify-between mb-6">
+        <div>
+          <p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">Heart Rate</p>
+          <div class="flex items-baseline gap-2">
+            <span id="val-heartRate" class="font-headline text-5xl font-black vital-value">—</span>
+            <span class="text-on-surface-variant font-label text-sm">bpm</span>
+          </div>
+        </div>
+        <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center">
+          <span class="material-symbols-outlined text-red-500 heartbeat" style="font-variation-settings:'FILL' 1;">favorite</span>
+        </div>
+      </div>
+      <div class="flex items-center justify-between">
+        <div id="status-heartRate" class="status-normal flex items-center gap-2 px-3 py-1 rounded-full status-card border text-xs font-semibold uppercase tracking-wide">
+          <span class="w-1.5 h-1.5 rounded-full status-dot"></span>
+          <span class="status-text">Normal</span>
+        </div>
+        <span class="text-[10px] text-on-surface-variant font-label">Range: 60–100 bpm</span>
+      </div>
+    </div>
+
+    <!-- Blood Glucose -->
+    <div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10 shadow-sm" id="card-glucose">
+      <div class="flex items-start justify-between mb-6">
+        <div>
+          <p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">Blood Glucose</p>
+          <div class="flex items-baseline gap-2">
+            <span id="val-glucose" class="font-headline text-5xl font-black vital-value">—</span>
+            <span class="text-on-surface-variant font-label text-sm">mg/dL</span>
+          </div>
+        </div>
+        <div class="w-12 h-12 rounded-full bg-amber-50 flex items-center justify-center">
+          <span class="material-symbols-outlined text-amber-600" style="font-variation-settings:'FILL' 1;">water_drop</span>
+        </div>
+      </div>
+      <div class="flex items-center justify-between">
+        <div id="status-glucose" class="status-normal flex items-center gap-2 px-3 py-1 rounded-full status-card border text-xs font-semibold uppercase tracking-wide">
+          <span class="w-1.5 h-1.5 rounded-full status-dot"></span>
+          <span class="status-text">Normal</span>
+        </div>
+        <span class="text-[10px] text-on-surface-variant font-label">Range: 70–140 mg/dL</span>
+      </div>
+    </div>
+
+    <!-- Hydration -->
+    <div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10 shadow-sm" id="card-hydration">
+      <div class="flex items-start justify-between mb-6">
+        <div>
+          <p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">Hydration</p>
+          <div class="flex items-baseline gap-2">
+            <span id="val-hydration" class="font-headline text-5xl font-black vital-value">—</span>
+            <span class="text-on-surface-variant font-label text-sm">%</span>
+          </div>
+        </div>
+        <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
+          <span class="material-symbols-outlined text-blue-500" style="font-variation-settings:'FILL' 1;">opacity</span>
+        </div>
+      </div>
+      <!-- Hydration bar -->
+      <div class="h-2 w-full bg-surface-container rounded-full overflow-hidden mb-4">
+        <div id="hydration-bar" class="h-full bg-primary rounded-full transition-all duration-700" style="width:0%"></div>
+      </div>
+      <div class="flex items-center justify-between">
+        <div id="status-hydration" class="status-normal flex items-center gap-2 px-3 py-1 rounded-full status-card border text-xs font-semibold uppercase tracking-wide">
+          <span class="w-1.5 h-1.5 rounded-full status-dot"></span>
+          <span class="status-text">Normal</span>
+        </div>
+        <span class="text-[10px] text-on-surface-variant font-label">Range: 85–99%</span>
+      </div>
+    </div>
+
+    <!-- Blood pH -->
+    <div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10 shadow-sm" id="card-ph">
+      <div class="flex items-start justify-between mb-6">
+        <div>
+          <p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">Blood pH</p>
+          <div class="flex items-baseline gap-2">
+            <span id="val-ph" class="font-headline text-5xl font-black vital-value">—</span>
+          </div>
+        </div>
+        <div class="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center">
+          <span class="material-symbols-outlined text-purple-500" style="font-variation-settings:'FILL' 1;">science</span>
+        </div>
+      </div>
+      <!-- pH scale bar -->
+      <div class="mb-4">
+        <div class="flex justify-between text-[9px] text-on-surface-variant mb-1 font-label">
+          <span>Acidic 7.30</span><span>Optimal 7.40</span><span>Alkaline 7.50</span>
+        </div>
+        <div class="h-2 w-full rounded-full overflow-hidden" style="background: linear-gradient(to right, #f87171, #4ade80, #60a5fa);">
+          <div id="ph-marker" class="h-full w-0.5 bg-white shadow-md transition-all duration-700" style="margin-left:50%"></div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between">
+        <div id="status-ph" class="status-normal flex items-center gap-2 px-3 py-1 rounded-full status-card border text-xs font-semibold uppercase tracking-wide">
+          <span class="w-1.5 h-1.5 rounded-full status-dot"></span>
+          <span class="status-text">Normal</span>
+        </div>
+        <span class="text-[10px] text-on-surface-variant font-label">Range: 7.35–7.45</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Nanobot sync footer -->
+  <div class="mt-10 flex items-center gap-3 p-5 bg-primary/5 border border-primary/10 rounded-xl">
+    <span class="material-symbols-outlined text-primary animate-spin" style="animation-duration:3s;">settings</span>
+    <div>
+      <p class="font-label text-xs font-bold uppercase tracking-widest text-primary">Nanobot Swarm Active</p>
+      <p class="text-sm text-on-surface-variant mt-0.5">847 sensors reporting · Polling every 2 seconds</p>
+    </div>
+  </div>
+
+</main>
+
+<!-- Bottom Nav -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-6 px-4 bg-[#f8f9fa]/70 backdrop-blur-2xl z-50 rounded-t-2xl shadow-[0_-8px_24px_rgba(0,0,0,0.04)]">
+  <a href="dashboard.html" class="flex flex-col items-center justify-center text-[#191c1d]/60 px-4 py-1.5 hover:bg-[#edeeef] transition-colors active:scale-90 transition-all duration-200">
+    <span class="material-symbols-outlined">home</span>
+    <span class="font-['Manrope'] text-[11px] font-semibold uppercase tracking-wider">Home</span>
+  </a>
+  <a href="index.html" class="flex flex-col items-center justify-center text-[#191c1d]/60 px-4 py-1.5 hover:bg-[#edeeef] transition-colors active:scale-90 transition-all duration-200">
+    <span class="material-symbols-outlined">nutrition</span>
+    <span class="font-['Manrope'] text-[11px] font-semibold uppercase tracking-wider">Nutrients</span>
+  </a>
+  <a href="vitals.html" class="flex flex-col items-center justify-center bg-[#0052d1] text-white rounded-xl px-4 py-1.5 shadow-lg shadow-blue-500/20 active:scale-90 transition-all duration-200">
+    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">query_stats</span>
+    <span class="font-['Manrope'] text-[11px] font-semibold uppercase tracking-wider">Vitals</span>
+  </a>
+  <a href="#" class="flex flex-col items-center justify-center text-[#191c1d]/60 px-4 py-1.5 hover:bg-[#edeeef] transition-colors active:scale-90 transition-all duration-200">
+    <span class="material-symbols-outlined">settings</span>
+    <span class="font-['Manrope'] text-[11px] font-semibold uppercase tracking-wider">Settings</span>
+  </a>
+</nav>
+
+<script src="client.js"></script>
+</body></html>
