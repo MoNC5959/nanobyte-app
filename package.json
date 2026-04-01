@@ -1,9 +1,9 @@
 {
   "name": "nanobyte",
   "version": "1.0.0",
-  "description": "NanoByte nanobot health dashboard with live WebSocket streaming",
-  "main": "server.js",
+  "description": "NanoByte nanobot health dashboard with live API readings",
   "scripts": {
+    "dev": "vercel dev",
     "start": "node server.js"
   },
   "dependencies": {
