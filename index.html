@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NanoByte | Nutrient Analysis</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "outline": "#717786","surface-variant": "#e1e3e4","inverse-on-surface": "#f0f1f2",
+          "surface-container": "#edeeef","surface": "#f8f9fa","surface-container-low": "#f3f4f5",
+          "on-primary": "#ffffff","surface-container-high": "#e7e8e9","surface-bright": "#f8f9fa",
+          "on-secondary-fixed-variant": "#3b485a","surface-tint": "#0054d6","on-tertiary-container": "#fffbff",
+          "error": "#ba1a1a","secondary-fixed": "#d6e3fb","inverse-primary": "#b3c5ff",
+          "on-error-container": "#93000a","tertiary": "#894d00","surface-dim": "#d9dadb",
+          "primary-container": "#156aff","tertiary-fixed": "#ffdcc0","error-container": "#ffdad6",
+          "on-primary-fixed": "#001849","surface-container-lowest": "#ffffff","on-secondary-fixed": "#0f1c2d",
+          "on-secondary": "#ffffff","on-secondary-container": "#586579","on-tertiary-fixed-variant": "#6b3b00",
+          "outline-variant": "#c1c6d7","secondary-fixed-dim": "#bac7de","on-primary-container": "#fefcff",
+          "on-tertiary": "#ffffff","tertiary-fixed-dim": "#ffb875","tertiary-container": "#ac6200",
+          "background": "#f8f9fa","on-background": "#191c1d","secondary-container": "#d6e3fb",
+          "on-surface-variant": "#414755","primary-fixed-dim": "#b3c5ff","on-tertiary-fixed": "#2d1600",
+          "primary": "#0052d1","primary-fixed": "#dae1ff","on-primary-fixed-variant": "#003fa4",
+          "secondary": "#525f73","surface-container-highest": "#e1e3e4","on-error": "#ffffff",
+          "on-surface": "#191c1d","inverse-surface": "#2e3132"
+        },
+        fontFamily: { "headline": ["Space Grotesk"], "body": ["Manrope"], "label": ["Manrope"] },
+        borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    },
+  }
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .glass-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(20px); }
+  body { min-height: max(884px, 100dvh); }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body leading-relaxed select-none overflow-x-hidden">
+
+<header class="fixed top-0 w-full z-50 bg-[#f8f9fa]/70 backdrop-blur-xl shadow-[0_12px_32px_rgba(0,84,214,0.06)] flex justify-between items-center px-6 h-16 w-full">
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded-full overflow-hidden border-2 border-primary/20">
+      <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu0yPrU--Ux-hY_Y66W32MgoSIeuwaC5kULrY0cVGk_jFRYGwrKaxsiAWNN4uFZLIZnFfk2DKE1mTvYMFv0D0MFuFbEcWXs60-EhCzkCQgEEIucyP8w7WEjytx9NeOLKeCHlqCghlzzAuU1h35PHh5xBndrT8jYdHh84kluJLXVpP7PXZwrb3qsvpbgQ825rx_dGtGv0GNpJPbyqusMpKCRJBtvgDvxOWmW2LRQWQApDr4Mau4dmmihv6i8KvUbOw4bjsiMHbMTCs" alt="Profile"/>
+    </div>
+    <a href="dashboard.html" class="font-headline font-bold tracking-tight text-2xl tracking-tighter text-[#0052d1] hover:opacity-75 transition-opacity">NanoByte</a>
+  </div>
+  <div class="flex items-center gap-4">
+    <button class="material-symbols-outlined text-[#191c1d] active:scale-95 transition-transform">notifications</button>
+  </div>
+</header>
+
+<main class="pt-24 pb-32 px-6 max-w-5xl mx-auto">
+  <section class="mb-10">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div class="space-y-1">
+        <span class="font-label text-[11px] font-semibold uppercase tracking-wider text-primary">Biometric Insight</span>
+        <h1 class="font-headline text-4xl font-bold tracking-tight text-on-surface">Nutrient Analysis</h1>
+        <p class="text-on-surface-variant max-w-md mt-2">Real-time molecular tracking of essential vitamins and minerals within your bloodstream.</p>
+      </div>
+      <div class="glass-card p-4 rounded-xl shadow-sm border border-outline-variant/15 flex items-center gap-4">
+        <div class="w-12 h-12 rounded-full bg-primary-container/10 flex items-center justify-center">
+          <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">fluid_med</span>
+        </div>
+        <div>
+          <div class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">Sync Status</div>
+          <div id="accuracy-value" class="font-headline font-bold text-lg rounded px-1 -mx-1">98.4% Accuracy</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+    <!-- Micronutrient Overview -->
+    <div class="md:col-span-8 bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10 shadow-sm">
+      <div class="flex justify-between items-start mb-8">
+        <div>
+          <h2 class="font-headline text-xl font-bold">Micronutrient Overview</h2>
+          <p id="last-updated" class="text-sm text-on-surface-variant rounded px-1 -mx-1">Last updated 14 minutes ago via NanoSync</p>
+        </div>
+        <span id="sync-badge" class="px-3 py-1 bg-surface-container rounded-full text-[10px] font-bold uppercase tracking-tighter transition-opacity">Live Stream</span>
+      </div>
+
+      <div class="space-y-6">
+        <!-- Vitamin D -->
+        <div class="flex items-center justify-between group">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined">wb_sunny</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-on-surface">Vitamin D</h3>
+              <div class="flex items-center gap-2 mt-1">
+                <span class="w-2 h-2 rounded-full bg-[#15803d]"></span>
+                <span class="text-xs text-[#15803d] font-semibold uppercase tracking-wide">Absorbed</span>
+              </div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div id="vit-d-value" class="font-headline font-bold text-lg rounded px-1 -mx-1">62 ng/mL</div>
+            <div class="text-[10px] text-on-surface-variant uppercase">Optimal Range</div>
+          </div>
+          <div class="ml-4 w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-[#15803d]">
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+        </div>
+
+        <!-- Vitamin A -->
+        <a href="nutrients.html" class="flex items-center justify-between group cursor-pointer hover:bg-surface-container-low rounded-xl px-2 -mx-2 transition-colors">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-tertiary">
+              <span class="material-symbols-outlined">visibility</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-on-surface">Vitamin A</h3>
+              <div class="flex items-center gap-2 mt-1">
+                <span class="w-2 h-2 rounded-full bg-tertiary-container"></span>
+                <span class="text-xs text-tertiary-container font-semibold uppercase tracking-wide">Requires Attention</span>
+              </div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div id="vit-a-value" class="font-headline font-bold text-lg text-tertiary rounded px-1 -mx-1">1.2 µmol/L</div>
+            <div class="text-[10px] text-tertiary uppercase">Below Threshold</div>
+          </div>
+          <div class="ml-4 w-8 h-8 rounded-full bg-tertiary-fixed/30 flex items-center justify-center text-tertiary">
+            <span class="material-symbols-outlined text-sm">priority_high</span>
+          </div>
+        </a>
+
+        <!-- Iron -->
+        <div class="flex items-center justify-between group">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined">hematology</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-on-surface">Iron (Ferritin)</h3>
+              <div class="flex items-center gap-2 mt-1">
+                <span class="w-2 h-2 rounded-full bg-[#15803d]"></span>
+                <span class="text-xs text-[#15803d] font-semibold uppercase tracking-wide">Absorbed</span>
+              </div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div id="iron-value" class="font-headline font-bold text-lg rounded px-1 -mx-1">115 ng/mL</div>
+            <div class="text-[10px] text-on-surface-variant uppercase">Balanced Level</div>
+          </div>
+          <div class="ml-4 w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-[#15803d]">
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+        </div>
+
+        <!-- Magnesium -->
+        <div class="flex items-center justify-between group">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined">bolt</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-on-surface">Magnesium</h3>
+              <div class="flex items-center gap-2 mt-1">
+                <span class="w-2 h-2 rounded-full bg-[#15803d]"></span>
+                <span class="text-xs text-[#15803d] font-semibold uppercase tracking-wide">Absorbed</span>
+              </div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div id="mag-value" class="font-headline font-bold text-lg rounded px-1 -mx-1">2.1 mg/dL</div>
+            <div class="text-[10px] text-on-surface-variant uppercase">Stable</div>
+          </div>
+          <div class="ml-4 w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-[#15803d]">
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Side Card -->
+    <div class="md:col-span-4 space-y-6">
+      <div class="bg-tertiary-container text-on-tertiary-container rounded-xl p-6 shadow-lg shadow-tertiary/10">
+        <span class="material-symbols-outlined mb-4" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+        <h3 class="font-headline font-bold text-xl mb-2">Immediate Protocol</h3>
+        <p class="text-sm opacity-90 leading-relaxed mb-6">Based on your Vitamin A levels, consider adding spinach or carrots to your next meal.</p>
+        <button class="w-full py-3 bg-on-tertiary-container text-tertiary font-bold rounded-xl text-sm transition-transform active:scale-95">Update Meal Plan</button>
+      </div>
+      <div class="bg-surface-container-lowest rounded-xl p-1 border border-outline-variant/10 shadow-sm overflow-hidden h-48">
+        <img class="w-full h-full object-cover rounded-lg opacity-80 mix-blend-multiply" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwQIW6SRct2uaMti8M6qbC-tEgncMEisGgUGYyhRSyr9pneuSXq_pjirTc3EBw6z3asSAYTjegKZ5ejXD2iBi4HnKxi9_FWUoSpNToueI_k7go50bKVlM72UTHpDTHJhyBbAxp2SXyMHZ6vkwa3U3zlRSNx0ULm2j4p0YFLIM3BzzO5GUiKMRx-Mk5olqKMyL6NfVZ8qm4rjJFXFsYHJcPhZbFtp5sCPXzLNnZYqthIg95EXcXmGUUOZV2JR9-Re-j0BIbVEWj5Yo" alt="Healthy food"/>
+      </div>
+    </div>
+
+    <!-- Secondary Markers -->
+    <section class="md:col-span-12 mt-12">
+      <h2 class="font-headline text-xl font-bold mb-6">Secondary Markers</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-surface-container-low p-5 rounded-xl border border-transparent hover:border-primary/20 transition-all cursor-pointer">
+          <div class="font-label text-[10px] uppercase tracking-wider text-on-surface-variant mb-1">Zinc</div>
+          <div class="flex items-center gap-2">
+            <span id="zinc-value" class="font-headline font-bold text-lg rounded px-1 -mx-1">94</span>
+            <span class="material-symbols-outlined text-sm text-[#15803d]">check</span>
+          </div>
+        </div>
+        <div class="bg-surface-container-low p-5 rounded-xl border border-transparent hover:border-primary/20 transition-all cursor-pointer">
+          <div class="font-label text-[10px] uppercase tracking-wider text-on-surface-variant mb-1">Calcium</div>
+          <div class="flex items-center gap-2">
+            <span id="calcium-value" class="font-headline font-bold text-lg rounded px-1 -mx-1">9.8</span>
+            <span class="material-symbols-outlined text-sm text-[#15803d]">check</span>
+          </div>
+        </div>
+        <div class="bg-surface-container-low p-5 rounded-xl border border-transparent hover:border-primary/20 transition-all cursor-pointer border-tertiary/20">
+          <div class="font-label text-[10px] uppercase tracking-wider text-on-surface-variant mb-1">Vitamin B12</div>
+          <div class="flex items-center gap-2">
+            <span id="b12-value" class="font-headline font-bold text-lg text-tertiary rounded px-1 -mx-1">180</span>
+            <span class="w-2 h-2 rounded-full bg-tertiary-container animate-pulse"></span>
+          </div>
+        </div>
+        <div class="bg-surface-container-low p-5 rounded-xl border border-transparent hover:border-primary/20 transition-all cursor-pointer">
+          <div class="font-label text-[10px] uppercase tracking-wider text-on-surface-variant mb-1">Potassium</div>
+          <div class="flex items-center gap-2">
+            <span id="potassium-value" class="font-headline font-bold text-lg rounded px-1 -mx-1">4.2</span>
+            <span class="material-symbols-outlined text-sm text-[#15803d]">check</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center pt-3 pb-6 px-4 bg-[#f8f9fa]/70 backdrop-blur-2xl z-50 rounded-t-2xl shadow-[0_-8px_24px_rgba(0,0,0,0.04)]">
+  <a href="dashboard.html" class="flex flex-col items-center justify-center text-[#191c1d]/60 px-4 py-1.5 hover:bg-[#edeeef] transition-colors active:scale-90 transition-all duration-200 cursor-pointer">
+    <span class="material-symbols-outlined">home</span>
+    <span class="font-['Manrope'] text-[11px] font-semibold uppercase tracking-wider">Home</span>
+  </a>
+  <a href="index.html" class="flex flex-col items-center justify-center bg-[#0052d1] text-white rounded-xl px-4 py-1.5 shadow-lg shadow-blue-500/20 active:scale-90 transition-all duration-200 cursor-pointer">
+    <span class="material-symbols-outlined">nutrition</span>
+    <span class="font-['Manrope'] text-[11px] font-semibold uppercase tracking-wider">Nutrients</span>
+  </a>
+  <a href="nutrients.html" class="flex flex-col items-center justify-center text-[#191c1d]/60 px-4 py-1.5 hover:bg-[#edeeef] transition-colors active:scale-90 transition-all duration-200 cursor-pointer">
+    <span class="material-symbols-outlined">query_stats</span>
+    <span class="font-['Manrope'] text-[11px] font-semibold uppercase tracking-wider">Vitals</span>
+  </a>
+  <a href="#" class="flex flex-col items-center justify-center text-[#191c1d]/60 px-4 py-1.5 hover:bg-[#edeeef] transition-colors active:scale-90 transition-all duration-200 cursor-pointer">
+    <span class="material-symbols-outlined">settings</span>
+    <span class="font-['Manrope'] text-[11px] font-semibold uppercase tracking-wider">Settings</span>
+  </a>
+</nav>
+
+<script src="ws-client.js"></script>
+</body></html>
